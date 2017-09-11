@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd"
+       default-autowire="byName">
+
+    <task:annotation-driven/>
+    <!-- 配置线程池 -->
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 线程池维护线程的最少数量 -->
+        <property name="corePoolSize" value="5"/>
+        <!-- 线程池维护线程所允许的空闲时间 -->
+        <property name="keepAliveSeconds" value="30000"/>
+        <!-- 线程池维护线程的最大数量 -->
+        <property name="maxPoolSize" value="100"/>
+        <!-- 线程池所使用的缓冲队列 -->
+        <property name="queueCapacity" value="1000"/>
+    </bean>
+
+
+    <bean name="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+        <property name="configLocation" value="classpath:quartz.properties" />
+        <property name="triggers">
+            <list>
+                <ref bean="suiteTokenTrigger" />
+                <ref bean="corpSuiteAuthFaileTrigger" />
+                <ref bean="reAuthFaileTrigger" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="suiteTokenJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass"  value="com.dingtalk.isv.access.biz.scheduler.SuiteTokenGenerateJob"/>
+        <property name="durability" value="true" />
+    </bean>
+
+    <bean id="suiteTokenTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="suiteTokenJobDetail" />
+        <property name="cronExpression" value="0 */30 * * * ?" />
+    </bean>
+
+
+    <bean id="corpSuiteAuthFaileJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass"  value="com.dingtalk.isv.access.biz.scheduler.CorpSuiteAuthFaileJob"/>
+        <property name="durability" value="true" />
+    </bean>
+
+    <bean id="corpSuiteAuthFaileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="corpSuiteAuthFaileJobDetail" />
+        <property name="cronExpression" value="0 */1 * * * ?" />
+    </bean>
+
+
+
+    <bean id="reAuthFaileJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.dingtalk.isv.access.biz.scheduler.ReAuthFaileJob"/>
+        <property name="jobDataMap">
+            <map>
+                <entry key="suiteKey" value="suitexdhgv7mn5ufoi9ui"/>
+                <entry key="appId" value="1949"/>
+            </map>
+        </property>
+        <property name="durability" value="true" />
+    </bean>
+    <bean id="reAuthFaileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="reAuthFaileJobDetail" />
+        <property name="cronExpression" value="0 */10 * * * ?" />
+    </bean>
+
+    <!-- a tmp monitor job-->
+    <bean id="monitorJob" class="com.dingtalk.isv.access.biz.scheduler.MonitorJob"/>
+
+    <!--
+    delete from QRTZ_TRIGGERS where TRIGGER_NAME='reAuthFaileTrigger';
+    delete from QRTZ_JOB_DETAILS where JOB_NAME='reAuthFaileJobDetail';
+    delete from QRTZ_CRON_TRIGGERS where TRIGGER_NAME='reAuthFaileTrigger';
+    居然要重启吗?每研究透彻
+    -->
+</beans>
+

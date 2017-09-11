@@ -1,0 +1,12 @@
+#log
+log.dir=${log_dir}
+log.level=${log_level}
+#jdbc
+jdbc.username=${jdbc_username}
+jdbc.password=${jdbc_password}
+jdbc.url=${jdbc_url}
+jdbc.params=autoReconnect=true&amp;rewriteBatchedStatements=true&amp;socketTimeout=30000&amp;connectTimeout=3000
+#other
+system.env=${system_env}
+oapi.environment=${oapi_environment}
+corp.suite.callback=${corp_suite_callback}

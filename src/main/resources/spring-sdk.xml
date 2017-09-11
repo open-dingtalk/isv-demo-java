@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+       default-autowire="byName">
+
+
+    <bean id="defaultConfig" class="com.dingtalk.open.client.DefaultConfig">
+        <property name="apiDomain" value="${oapi.environment}"/>
+        <!--<property name="apiDomain" value=" http://10.218.141.241:7001"/>-->
+        <property name="globalHttpConfig">
+            <bean class="com.dingtalk.open.client.DefaultConfig.HttpConfig">
+                <property name="readTimeout" value="30000" />
+                <property name="connectTimeout" value="3000" />
+            </bean>
+        </property>
+        <property name="folwControl">
+            <bean class="com.dingtalk.open.client.DefaultConfig.FolwControl">
+                <property name="isUse" value="true" />
+                <property name="maxQpm" value="1500" />
+                <property name="threadPoolSize" value="10" />
+            </bean>
+        </property>
+        <property name="customHttpConfig">
+            <map>
+                <entry key="/service/get_suite_token">
+                    <bean class="com.dingtalk.open.client.DefaultConfig.HttpConfig">
+                        <property name="requestTimeout" value="1000" />
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="serviceFactory" class="com.dingtalk.open.client.spring.DingOpenClientServiceFactoryBean">
+        <property name="defaultConfig" ref="defaultConfig"/>
+    </bean>
+
+    <bean id="corpUserService" class="com.dingtalk.open.client.spring.DingOpenClientApiBean">
+        <property name="serviceFactory" ref="serviceFactory"/>
+        <property name="interfaceName" value="com.dingtalk.open.client.api.service.corp.CorpUserService"/>
+    </bean>
+
+    <bean id="corpDepartmentService" class="com.dingtalk.open.client.spring.DingOpenClientApiBean">
+        <property name="serviceFactory" ref="serviceFactory"/>
+        <property name="interfaceName" value="com.dingtalk.open.client.api.service.corp.CorpDepartmentService"/>
+    </bean>
+
+
+    <bean id="isvService" class="com.dingtalk.open.client.spring.DingOpenClientApiBean">
+        <property name="serviceFactory" ref="serviceFactory"/>
+        <property name="interfaceName" value="com.dingtalk.open.client.api.service.isv.IsvService"/>
+    </bean>
+
+    <bean id="messageService" class="com.dingtalk.open.client.spring.DingOpenClientApiBean">
+        <property name="serviceFactory" ref="serviceFactory"/>
+        <property name="interfaceName" value="com.dingtalk.open.client.api.service.corp.MessageService"/>
+    </bean>
+</beans>
+

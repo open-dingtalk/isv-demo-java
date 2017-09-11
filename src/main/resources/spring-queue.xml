@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd"
+       default-autowire="byName">
+
+
+    <!-- 企业授权套件mq -->
+    <amq:queue id="orgAuthSuiteQueue" physicalName="orgAuthSuite.queue" />
+
+    <!-- 开放平台回调mq -->
+    <amq:queue id="suiteCallBackQueue" physicalName="suiteCallBack.queue" />
+
+
+    <!-- 自行配置mq的地址 -->
+    <amq:connectionFactory id="amqConnectionFactory"
+                           brokerURL="failover:(tcp://localhost:61616,tcp://localhost:61616)?randomize=false&amp;jms.useAsyncSend=true"
+                           userName="admin"
+                           password="admin" />
+
+    <bean id="connectionFactory"  class="org.springframework.jms.connection.CachingConnectionFactory">
+        <constructor-arg ref="amqConnectionFactory" />
+        <property name="sessionCacheSize" value="100" />
+    </bean>
+
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="connectionFactory" />
+    </bean>
+
+</beans>
+

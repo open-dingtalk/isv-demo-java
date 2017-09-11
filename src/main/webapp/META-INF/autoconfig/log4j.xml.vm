@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="GBK" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="PROJECT" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/isv-crm-access.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/isv-crm-access.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="ERROR"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- callback -->
+    <appender name="SUITE_CALLBACK_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/suite_callback.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- suite -->
+    <appender name="SUITE_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/suite_manage.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+    <!-- 企业套件授权管理 -->
+    <appender name="CORP_SUITE_AUTH_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/corp_suite_auth.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- task -->
+    <appender name="TASK_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/task.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- corp-->
+    <appender name="CORP_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/corp_manage.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+   <!-- org-->
+    <appender name="ORG_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/org_manage.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- staff-->
+    <appender name="STAFF_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/staff_manage.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- CRM-->
+    <appender name="CRM_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/crm_manage.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- form -->
+    <appender name="FORM_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/from_manage.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="${log_level}"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- remote serivce -->
+    <appender name="SERVICE_PROFILE_LOG_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/service_profile_access.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- http controller -->
+    <appender name="CONTROLLER_PROFILE_LOG_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/controller_profile_access.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- http invoke log -->
+    <appender name="HTTP_INVOKE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/http_invoke.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- ding open sdk log -->
+    <appender name="DING_OPEN_CLIENT_SDK_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/client_sdk.log" />
+        <param name="append" value="true" />
+        <param name="encoding" value="UTF-8" />
+        <param name="threshold" value="INFO" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %p %m%n" />
+        </layout>
+    </appender>
+
+    <!-- monitor log -->
+    <appender name="MONITOR_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/monitor.log" />
+        <param name="append" value="true" />
+        <param name="encoding" value="UTF-8" />
+        <param name="threshold" value="INFO" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- monitor log -->
+    <appender name="OAPI_HTTP_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/http_request_helper.log" />
+        <param name="append" value="true" />
+        <param name="encoding" value="UTF-8" />
+        <param name="threshold" value="INFO" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+
+    <!-- monitor log -->
+    <appender name="EVENT_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/event.log" />
+        <param name="append" value="true" />
+        <param name="encoding" value="UTF-8" />
+        <param name="threshold" value="INFO" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- jsapi log -->
+    <appender name="JSAPI_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${log_dir}/biz/jsapi.log" />
+        <param name="append" value="true" />
+        <param name="encoding" value="UTF-8" />
+        <param name="threshold" value="INFO" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+    <logger name="JSAPI_LOGGER" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="JSAPI_LOGGER_APPENDER" />
+    </logger>
+
+
+    <logger name="org.springframework.remoting.support" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="PROJECT" />
+    </logger>
+
+    <logger name="OAPI_HTTP_LOGGER" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="OAPI_HTTP_LOGGER_APPENDER" />
+    </logger>
+
+
+    <logger name="MONITOR_LOG" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="MONITOR_LOGGER_APPENDER" />
+    </logger>
+
+    <logger name="CORP_SUITE_AUTH_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="CORP_SUITE_AUTH_LOGGER_APPENDER"/>
+    </logger>
+
+    <logger name="TASK_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="TASK_LOGGER_APPENDER"/>
+    </logger>
+
+    <logger name="CORP_MANAGE_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="CORP_MANAGE_LOGGER_APPENDER"/>
+    </logger>
+
+    <logger name="ORG_MANAGE_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="ORG_MANAGE_LOGGER_APPENDER"/>
+    </logger>
+
+
+    <logger name="SUITE_MANAGE_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="SUITE_MANAGE_LOGGER_APPENDER"/>
+    </logger>
+
+
+    <logger name="STAFF_MANAGE_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="STAFF_MANAGE_LOGGER_APPENDER"/>
+    </logger>
+
+    <logger name="CRM_MANAGE_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="CRM_MANAGE_LOGGER_APPENDER"/>
+    </logger>
+
+    <logger name="FORM_MANAGE_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="FORM_MANAGE_LOGGER_APPENDER"/>
+    </logger>
+
+    <logger name="com.dingtalk.isv.common.log.service.ServiceMethodInterceptor" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="SERVICE_PROFILE_LOG_APPENDER"/>
+    </logger>
+
+    <logger name="CONTROLLER_PROFILE_LOG" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="CONTROLLER_PROFILE_LOG_APPENDER"/>
+    </logger>
+
+    <logger name="SUITE_CALLBACK_LOGGER" additivity="false">
+        <level value="${log_level}"/>
+        <appender-ref ref="SUITE_CALLBACK_LOGGER_APPENDER"/>
+    </logger>
+
+    <logger name="HTTP_INVOKE_LOGGER" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="HTTP_INVOKE_LOGGER_APPENDER"/>
+    </logger>
+
+    <logger name="EVENT_LOGGER" additivity="false">
+        <level value="INFO"/>
+        <appender-ref ref="EVENT_LOGGER_APPENDER"/>
+    </logger>
+
+
+
+    <logger name="DING_OPEN_CLIENT_SDK_LOGGER" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="DING_OPEN_CLIENT_SDK_LOGGER_APPENDER" />
+	</logger>
+
+    <logger name="org.springframework.scheduling.quartz" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="TASK_LOGGER_APPENDER" />
+    </logger>
+
+
+    <root>
+        <level value="${log_level}"/>
+        <appender-ref ref="PROJECT"/>
+        <appender-ref ref="ERROR"/>
+    </root>
+</log4j:configuration>

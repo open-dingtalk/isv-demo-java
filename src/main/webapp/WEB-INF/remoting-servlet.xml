@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+       default-autowire="byName">
+
+    <!--org.springframework.remoting.caucho.HessianServiceExporter-->
+    <!--org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter-->
+
+    <bean name="/CorpManageService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="corpManageService"/>
+        <property name="serviceInterface" value="com.dingtalk.isv.access.api.service.corp.CorpManageService"/>
+    </bean>
+    <bean name="/StaffManageService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="staffManageService"/>
+        <property name="serviceInterface" value="com.dingtalk.isv.access.api.service.corp.StaffManageService"/>
+    </bean>
+
+    <bean name="/CorpSuiteAuthService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="corpSuiteAuthService"/>
+        <property name="serviceInterface"  value="com.dingtalk.isv.access.api.service.suite.CorpSuiteAuthService"/>
+    </bean>
+
+    <bean name="/CrmManageService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="crmManageService"/>
+        <property name="serviceInterface"  value="com.dingtalk.isv.access.api.service.crm.CrmManageService"/>
+    </bean>
+
+    <bean name="/DeptManageService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="deptManageService"/>
+        <property name="serviceInterface"  value="com.dingtalk.isv.access.api.service.corp.DeptManageService"/>
+    </bean>
+
+    <bean name="/SendMessageService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="sendMessageService"/>
+        <property name="serviceInterface"  value="com.dingtalk.isv.access.api.service.message.SendMessageService"/>
+    </bean>
+
+    <bean name="/ReportManageService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="reportManageService"/>
+        <property name="serviceInterface"  value="com.dingtalk.isv.access.api.service.microapp.report.ReportManageService"/>
+    </bean>
+
+
+    <bean name="/OrgManangerService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="orgManangerService"/>
+        <property name="serviceInterface"  value="com.dingtalk.isv.access.api.service.org.OrgManangerService"/>
+    </bean>
+</beans>
