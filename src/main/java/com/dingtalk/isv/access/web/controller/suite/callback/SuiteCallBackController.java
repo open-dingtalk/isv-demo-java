@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +50,11 @@ public class SuiteCallBackController{
     @Qualifier("suiteCallBackQueue")
     private Queue suiteCallBackQueue;
 
+    private @Value("#{config['suite.token']}")
+    String token;
+    private @Value("#{config['suite.aes']}")
+    String aesKey;
+
     @ResponseBody
     @RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String printHello() {
@@ -72,21 +78,11 @@ public class SuiteCallBackController{
                                                 @RequestBody(required = false) JSONObject json
     ) {
         try{
-            /**
-             * token,aesKey这两个参数在注册套件的时候,填写的。如果不想改代码,那么注册套件的时候也可以填写下面的两个数值
-             * 要注意信息安全哦.
-             */
-
-            String token = "testtoken";
-            String aesKey = "z6f7mveugcsk88l7pthgof43oo8vimrtformbjkz9my";
-
             bizLogger.info(LogFormatter.getKVLogData(LogFormatter.LogEvent.START,
                     LogFormatter.KeyValue.getNew("signature", signature),
                     LogFormatter.KeyValue.getNew("timestamp", timestamp),
                     LogFormatter.KeyValue.getNew("nonce", nonce),
-                    LogFormatter.KeyValue.getNew("json", json),
-                    LogFormatter.KeyValue.getNew("token", token),
-                    LogFormatter.KeyValue.getNew("aesKey", aesKey)
+                    LogFormatter.KeyValue.getNew("json", json)
                     ));
 
             DingTalkEncryptor dingTalkEncryptor = new DingTalkEncryptor(token, aesKey, "suite4xxxxxxxxxxxxxxx");

@@ -1,5 +1,4 @@
 #!/bin/sh
-/home/mint/antx.properties
 rm -rf $1/webapps/ding-isv-access.war
 rm -rf $1/webapps/ding-isv-access
 cp  ./target/ding-isv-access.war $1/webapps/

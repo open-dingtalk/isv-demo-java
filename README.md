@@ -26,7 +26,6 @@ git clone https://github.com/hetaoZhong/ding-isv-access.git
 # 导入数据库文件
 mysql -u root -p ding_isv_access < db_sql.sql
 ```
-修改web/src/main/webapp/META-INF/autoconfig/auto-config.xml, 配置log目录和mysql连接
 
 进入[开发者平台](http://open-dev.dingtalk.com)并创建ISV套件，如下填写这几项，填写完先不要点确定
 - Token: 任意字符串
@@ -34,8 +33,8 @@ mysql -u root -p ding_isv_access < db_sql.sql
 - IP白名单: a.b.c.d
 - 回调地址: http://a.b.c.d:8080/ding-isv-access/suite/create
 
-打开web/src/main/java/com/dingtalk/isv/access/web/controller/suite/callback/SuiteCallBackController.java
-文件，在`suiteCreate`函数中，修改token,aesKey的值分别对应上面的Token和加密密钥
+修改web/src/main/webapp/META-INF/autoconfig/auto-config.xml, 配置mysql数据库、用户名、密码;
+并修改suite.token, suite.aes的值分别对应上面的Token和加密密钥
 
 ```sh
 # 清理auto-config

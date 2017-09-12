@@ -6,6 +6,9 @@ jdbc.username=${jdbc_username}
 jdbc.password=${jdbc_password}
 jdbc.url=${jdbc_url}
 jdbc.params=autoReconnect=true&amp;rewriteBatchedStatements=true&amp;socketTimeout=30000&amp;connectTimeout=3000
+#suite creation
+suite.token=${suite_token}
+suite.aes=${suite_aes}
 #other
 system.env=${system_env}
 oapi.environment=${oapi_environment}

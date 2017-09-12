@@ -5,4 +5,5 @@
 .git/
 target/
 .settings/
+logs/
 .DS_Store
