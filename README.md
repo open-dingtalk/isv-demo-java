@@ -27,7 +27,7 @@ git clone https://github.com/open-dingtalk/isv-demo-java.git
 ### 导入数据库文件
 mysql -u root -p ding_isv_access < db_sql.sql
 
-### 在antx.properties中修改数据库和套件的配置项
+### 在[antx.properties](./antx.properties)中修改数据库和套件的配置项
 
 ![](./res/antx.png)
 
@@ -48,10 +48,8 @@ mvn   -Dmaven.test.skip=true  -Dautoconfig.interactive=false  clean package
 
 #### 注意启动失败或访问不了Demo首页：
 
-1. 查看数据的表名是否为大写。 mysql没有设置数据不区分大小写，会导致启动创建quartz的相关Bean失败。  
-   
-
-* 这个时候如果配置无误的话，打开浏览器http://a.b.c.d:8080/ding-isv-access/checkpreload.htm，会看到浏览器显示success。说明项目已经部署成功。
+* 查看数据的表名是否为大写。 mysql没有设置数据不区分大小写，会导致启动创建quartz的相关Bean失败。  
+* 这个时候如果配置无误的话，打开浏览器[http://a.b.c.d:8080/ding-isv-access/checkpreload.htm](http://a.b.c.d:8080/ding-isv-access/checkpreload.htm)，会看到浏览器显示success。说明项目已经部署成功。
 
 ## 创建套件
 进入[开发者平台](http://open-dev.dingtalk.com)并创建ISV套件，如下填写参数的值：
