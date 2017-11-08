@@ -3,7 +3,7 @@ ISV接入DEMO
 
 钉钉开发者平台ISV接入详细示例以及代码(JAVA版本)
 
-## 功能列表
+### 功能列表
 - 创建ISV套件及应用
 - 应用授权及管理
 - ISV免登鉴权
@@ -23,38 +23,36 @@ ISV接入DEMO
 
 ### 下载代码
 git clone https://github.com/open-dingtalk/isv-demo-java.git
+
 ### 导入数据库文件
 mysql -u root -p ding_isv_access < db_sql.sql
 
-修改web/src/main/webapp/META-INF/autoconfig/auto-config.xml, 配置log目录和mysql连接
+### 在antx.properties中修改数据库和套件的配置项
+
+![](res/antx.png)
 
 
+#### 配置项说明
 
-## 获取验证回调地址参数
-进入[开发者平台](http://open-dev.dingtalk.com)并点击创建ISV套件。获取以下参数：
+* 配置mysql数据库、用户名、密码; 
+* suite.token, suite.aes的值分别`创建套件时填写的Token和加密密钥`
 
-- Token: 随意填写任意字符串
-- 数据加密密钥: 点击自动生成
 
-注意(Token和数据加密密钥，如果不想进入开发者平台生成，也可以直接随设置字符加数字的任意字符串。建议进入开发者后台自动生成)
+#### 编译打包
 
-修改web/src/main/webapp/META-INF/autoconfig/auto-config.xml, 配置mysql数据库、用户名、密码; 并修改suite.token, suite.aes的值分别对应上面的Token和加密密钥
-
-### 清理auto-config
-rm -rf ~/antx.properties
-#### 编译
 mvn   -Dmaven.test.skip=true  -Dautoconfig.interactive=false  clean package
+
 ### 部署ding-isv-access.war，参见delpoy-ding-isv-access.sh
-### 第一个参数为TOMCAT路径
-./delpoy-ding-isv-access.sh /usr/local/tomcat
 
-注意启动失败或访问不了Demo首页：
+* 第一个参数为TOMCAT路径
+* ./delpoy-ding-isv-access.sh /usr/local/tomcat
 
-   1. 查看数据的表名是否为大写。 mysql没有设置数据不区分大小写，会导致启动创建quartz的相关Bean失败。  
+#### 注意启动失败或访问不了Demo首页：
+
+1. 查看数据的表名是否为大写。 mysql没有设置数据不区分大小写，会导致启动创建quartz的相关Bean失败。  
    
 
-这个时候如果配置无误的话，打开浏览器
-http://a.b.c.d:8080/ding-isv-access/checkpreload.htm，会看到浏览器显示success。说明项目已经部署成功。
+* 这个时候如果配置无误的话，打开浏览器http://a.b.c.d:8080/ding-isv-access/checkpreload.htm，会看到浏览器显示success。说明项目已经部署成功。
 
 ## 创建套件
 进入[开发者平台](http://open-dev.dingtalk.com)并创建ISV套件，如下填写参数的值：
