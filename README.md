@@ -75,10 +75,10 @@ mvn   -Dmaven.test.skip=true  -Dautoconfig.interactive=false  clean package
 为了能够在企业页面打开并测试微应用，还需要完成下面的步骤:
 
 1. 进入套件管理页面，记下套件名称、Token、数据加密密钥、套件Key、套件secret
-2. 在MySQL数据库中插入新建套件信息
-`insert into isv_suite(id, gmt_create, gmt_modified, suite_name, suite_key,
+2. 在MySQL数据库中插入新建套件信息**非常重要**
+`insert into isv_suite( gmt_create, gmt_modified, suite_name, suite_key,
 suite_secret, encoding_aes_key, token, event_receive_url)
-values(1, NOW(), NOW(), '套件名称', '套件Key', '套件secret','数据加密密钥', 'Token', '');`
+values( NOW(), NOW(), '套件名称', '套件Key', '套件secret','数据加密密钥', 'Token', '');`
 注意替换相应字符串
 3. 点击修改套件，修改回调URL为`http://a.b.c.d:8080/ding-isv-access/suite/callback/{套件Key}`（套件Key为创建套件成功后套件列表里的套件key）
 ，注意替换套件Key
