@@ -43,7 +43,7 @@ mysql -u root -p ding_isv_access < db_sql.sql
 ### 清理auto-config
 rm -rf ~/antx.properties
 #### 编译
-mvn clean package -Dmaven.test.skip=true
+mvn   -Dmaven.test.skip=true  -Dautoconfig.interactive=false  clean package
 ### 部署ding-isv-access.war，参见delpoy-ding-isv-access.sh
 ### 第一个参数为TOMCAT路径
 ./delpoy-ding-isv-access.sh /usr/local/tomcat
