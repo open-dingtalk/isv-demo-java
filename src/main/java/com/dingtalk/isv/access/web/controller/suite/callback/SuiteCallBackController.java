@@ -70,8 +70,9 @@ public class SuiteCallBackController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/suite/create", method = {RequestMethod.POST})
+    @RequestMapping(value = "/suite/create{suiteKey}", method = {RequestMethod.POST})
     public Map<String, String> suiteCreate(
+            @PathVariable("suiteKey") String suiteKey,
             @RequestParam(value = "signature", required = false) String signature,
             @RequestParam(value = "timestamp", required = false) String timestamp,
             @RequestParam(value = "nonce", required = false) String nonce,
@@ -85,7 +86,7 @@ public class SuiteCallBackController {
                     LogFormatter.KeyValue.getNew("json", json)
             ));
 
-            DingTalkEncryptor dingTalkEncryptor = new DingTalkEncryptor(token, aesKey, "suite4xxxxxxxxxxxxxxx");
+            DingTalkEncryptor dingTalkEncryptor = new DingTalkEncryptor(token, aesKey, suiteKey);
             String encryptMsg = json.getString("encrypt");
             String plainText = dingTalkEncryptor.getDecryptMsg(signature, timestamp, nonce, encryptMsg);
             JSONObject callbackMsgJson = JSONObject.parseObject(plainText);
