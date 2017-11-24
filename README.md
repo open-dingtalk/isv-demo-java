@@ -57,7 +57,10 @@ mvn   -Dmaven.test.skip=true  -Dautoconfig.interactive=false  clean package
 - Token: 任意字符串
 - 数据加密密钥: 点击自动生成
 - IP白名单: a.b.c.d
-- 回调地址: http://a.b.c.d:8080/ding-isv-access/suite/create
+
+点击下一步完成回调地址验证
+
+- 回调地址: http://a.b.c.d:8080/ding-isv-access/suite/create/{替换成自己的suiteKey}
 
 点击验证有效性。 页面显示`检查成功`后，就可以点击确定，成功创建套件。
 

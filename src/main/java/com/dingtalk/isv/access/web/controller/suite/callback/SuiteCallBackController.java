@@ -70,7 +70,7 @@ public class SuiteCallBackController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/suite/create{suiteKey}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/suite/create/{suiteKey}", method = {RequestMethod.POST})
     public Map<String, String> suiteCreate(
             @PathVariable("suiteKey") String suiteKey,
             @RequestParam(value = "signature", required = false) String signature,
