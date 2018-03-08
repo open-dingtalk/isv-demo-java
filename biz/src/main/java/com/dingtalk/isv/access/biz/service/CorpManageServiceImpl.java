@@ -244,7 +244,7 @@ public class CorpManageServiceImpl implements CorpManageService {
                 LogFormatter.KeyValue.getNew("suiteKey", suiteKey),
                 LogFormatter.KeyValue.getNew("corpId", corpId)
         ));
-        String jsTicketLockKey = "jsapi_ticlet_"+suiteKey+"_"+corpId;
+        String jsTicketLockKey = "jsapi_ticket_"+suiteKey+"_"+corpId;
         try {
             CorpJSAPITicketDO corpJSTicketDO = corpJSAPITicketDao.getCorpJSAPITicket(suiteKey, corpId);
             Calendar calendar = Calendar.getInstance();
