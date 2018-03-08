@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.isv.access.biz.dao.CorpSuiteAuthDao">
+
+    <resultMap type="com.dingtalk.isv.access.biz.model.CorpSuiteAuthDO" id="corpSuiteAuthMap">
+        <id property="id" column="id" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified" />
+        <result property="suiteKey" column="suite_key" />
+        <result property="corpId" column="corp_id" />
+        <result property="permanentCode" column="permanent_code" />
+        <result property="chPermanentCode" column="ch_permanent_code" />
+    </resultMap>
+
+    <sql id="select-all-fields">
+        id,
+        gmt_create,
+        gmt_modified,
+        suite_key,
+        corp_id,
+        permanent_code,
+        ch_permanent_code
+    </sql>
+
+    <insert id="addOrUpdateCorpSuiteAuth" useGeneratedKeys="true" keyProperty="id">
+        insert into isv_corp_suite_auth (
+                gmt_create,
+                gmt_modified,
+                suite_key,
+                corp_id,
+                permanent_code,
+                ch_permanent_code
+        )values(
+                now(),
+                now(),
+                #{suiteKey},
+                #{corpId},
+                #{permanentCode},
+                #{chPermanentCode}
+        )ON DUPLICATE KEY UPDATE gmt_modified=now(),permanent_code=#{permanentCode},ch_permanent_code=#{chPermanentCode}
+    </insert>
+
+    <select id="getCorpSuiteAuth" resultMap="corpSuiteAuthMap">
+        SELECT <include refid="select-all-fields"/>  FROM isv_corp_suite_auth
+        <![CDATA[
+			WHERE suite_key=#{suiteKey} AND corp_id=#{corpId}
+		 ]]>
+    </select>
+
+
+    <delete id="deleteCorpSuiteAuth">
+        delete from isv_corp_suite_auth
+        <![CDATA[
+			WHERE suite_key=#{suiteKey} AND corp_id=#{corpId}
+		 ]]>
+    </delete>
+
+    <select id="getCorpSuiteAuthByPage" resultMap="corpSuiteAuthMap">
+      SELECT <include refid="select-all-fields"/>
+      FROM isv_corp_suite_auth ORDER BY id ASC LIMIT #{startRow}, #{pageSize}
+    </select>
+
+
+
+</mapper>

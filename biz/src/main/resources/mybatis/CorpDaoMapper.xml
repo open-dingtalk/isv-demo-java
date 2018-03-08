@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.isv.access.biz.dao.CorpDao">
+
+    <resultMap type="com.dingtalk.isv.access.biz.model.CorpDO" id="corpMap">
+        <id property="id" column="id" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified" />
+        <result property="corpId" column="corp_id" />
+        <result property="inviteCode" column="invite_code" />
+        <result property="industry" column="industry" />
+        <result property="corpName" column="corp_name" />
+        <result property="inviteUrl" column="invite_url" />
+        <result property="corpLogoUrl" column="corp_logo_url" />
+    </resultMap>
+
+    <sql id="select-all-fields">
+            id,
+            gmt_create,
+            gmt_modified,
+            corp_id,
+            invite_code,
+            industry,
+            corp_name,
+            invite_url,
+            corp_logo_url
+    </sql>
+
+    <insert id="saveOrUpdateCorp" useGeneratedKeys="true" keyProperty="id">
+        insert into isv_corp (
+                gmt_create,
+                gmt_modified,
+                corp_id,
+                invite_code,
+                industry,
+                corp_name,
+                invite_url,
+                corp_logo_url
+        )values(
+                now(),
+                now(),
+                #{corpId},
+                #{inviteCode},
+                #{industry},
+                #{corpName},
+                #{inviteUrl},
+                #{corpLogoUrl}
+        )ON DUPLICATE KEY UPDATE gmt_modified=now(),invite_code=#{inviteCode},industry=#{industry},corp_name=#{corpName},invite_url=#{inviteUrl},corp_logo_url=#{corpLogoUrl}
+    </insert>
+
+
+
+    <select id="getCorpByCorpId" resultMap="corpMap">
+        SELECT <include refid="select-all-fields"/>  FROM isv_corp
+        <![CDATA[
+			WHERE corp_id=#{corpId}
+		 ]]>
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.isv.access.biz.dao.CorpTokenDao">
+
+    <resultMap type="com.dingtalk.isv.access.biz.model.CorpTokenDO" id="corpTokenMap">
+        <id property="id" column="id" />
+        <result property="gmtCreate" column="gmt_createa" />
+        <result property="gmtModified" column="gmt_modified" />
+        <result property="suiteKey" column="suite_key" />
+        <result property="corpId" column="corp_id" />
+        <result property="corpToken" column="corp_token" />
+        <result property="expiredTime" column="expired_time" />
+    </resultMap>
+
+    <sql id="select-all-fields">
+        id,
+        gmt_create,
+        gmt_modified,
+        suite_key,
+        corp_id,
+        corp_token,
+        expired_time
+    </sql>
+
+    <insert id="saveOrUpdateCorpToken" useGeneratedKeys="true" keyProperty="id">
+        insert into isv_corp_token (
+                gmt_create,
+                gmt_modified,
+                suite_key,
+                corp_id,
+                corp_token,
+                expired_time
+        )values(
+                now(),
+                now(),
+                #{suiteKey},
+                #{corpId},
+                #{corpToken},
+                #{expiredTime}
+        )ON DUPLICATE KEY UPDATE gmt_modified=now(),corp_token=#{corpToken},expired_time=#{expiredTime}
+    </insert>
+
+    <select id="getCorpToken" resultMap="corpTokenMap">
+        SELECT <include refid="select-all-fields"/>  FROM isv_corp_token
+        <![CDATA[
+			WHERE suite_key=#{suiteKey} and corp_id=#{corpId}
+		 ]]>
+    </select>
+
+
+    <delete id="deleteCorpToken">
+        DELETE FROM isv_corp_token
+        <![CDATA[
+			WHERE suite_key=#{suiteKey} and corp_id=#{corpId}
+		 ]]>
+    </delete>
+</mapper>

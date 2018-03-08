@@ -1,7 +1,7 @@
 #!/bin/sh
-rm -rf $1/webapps/ding-isv-access.war
-rm -rf $1/webapps/ding-isv-access
-cp  ./target/ding-isv-access.war $1/webapps/
-echo kill `ps aux |grep "tomcat"|grep "java"|grep -v grep|tr -s ' '|cut -d' ' -f2`
-ps aux |grep "tomcat"|grep "java"|grep -v grep|tr -s ' '|cut -d' ' -f2|xargs kill -9
-sh $1/bin/startup.sh
+rm -rf /home/mint/antx.properties
+kill -9 `ps -ef | grep tomcat | grep -v grep | awk '{print $2}'`
+rm -rf /usr/local/soft/apache-tomcat-7.0.67/webapps/ding-isv-accesss.war
+rm -rf /usr/local/soft/apache-tomcat-7.0.67/webapps/ding-isv-accesss
+cp  /home/mint/workspace/ding-isv-access/web/target/ding-isv-accesss.war /usr/local/soft/apache-tomcat-7.0.67/webapps/
+sh /usr/local/soft/apache-tomcat-7.0.67/bin/startup.sh

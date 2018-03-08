@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+       default-autowire="byName">
+
+    <bean id="accessSystemConfig" class="com.dingtalk.isv.access.api.constant.AccessSystemConfig">
+        <property name="corpSuiteCallBackUrl" value="${corp.suite.callback}"></property>
+    </bean>
+
+    <bean id="httpRequestHelper" class="com.dingtalk.isv.access.common.util.HttpRequestHelper"></bean>
+    <bean id="crmOapiRequestHelper" class="com.dingtalk.isv.access.biz.dingutil.CrmOapiRequestHelper">
+        <property name="oapiDomain" value="${oapi.environment}" />
+        <property name="httpRequestHelper" ref="httpRequestHelper"/>
+    </bean>
+
+
+    <bean id="corpRequestHelper" class="com.dingtalk.isv.access.biz.dingutil.CorpOapiRequestHelper">
+        <property name="oapiDomain" value="${oapi.environment}" />
+        <property name="httpRequestHelper" ref="httpRequestHelper"/>
+    </bean>
+
+    <bean id="confOapiRequestHelper" class="com.dingtalk.isv.access.biz.dingutil.ConfOapiRequestHelper">
+        <property name="oapiDomain" value="${oapi.environment}" />
+        <property name="httpRequestHelper" ref="httpRequestHelper"/>
+    </bean>
+
+    <bean id="channelOapiRequestHelper" class="com.dingtalk.isv.access.biz.dingutil.ChannelOapiRequestHelper">
+        <property name="oapiDomain" value="${oapi.environment}" />
+        <property name="httpRequestHelper" ref="httpRequestHelper"/>
+    </bean>
+
+    <bean id="isvRequestHelper" class="com.dingtalk.isv.access.biz.dingutil.ISVRequestHelper">
+        <property name="oapiDomain" value="${oapi.environment}" />
+        <property name="httpRequestHelper" ref="httpRequestHelper"/>
+    </bean>
+
+    <bean id="corpDeptOapiRequestHelper" class="com.dingtalk.isv.access.biz.dingutil.CorpDeptOapiRequestHelper">
+        <property name="oapiDomain" value="${oapi.environment}" />
+    </bean>
+
+    <bean id="corpChatOapiRequestHelper" class="com.dingtalk.isv.access.biz.dingutil.CorpChatOapiRequestHelper">
+        <property name="oapiDomain" value="${oapi.environment}" />
+    </bean>
+
+
+
+    <bean id="suiteManageService" class="com.dingtalk.isv.access.biz.service.SuiteManageServiceImpl"/>
+    <bean id="corpSuiteAuthService" class="com.dingtalk.isv.access.biz.service.CorpSuiteAuthServiceImpl"/>
+    <bean id="corpManageService" class="com.dingtalk.isv.access.biz.service.CorpManageServiceImpl"/>
+    <bean id="staffManageService" class="com.dingtalk.isv.access.biz.service.EmpManageServiceImpl"/>
+    <bean id="deptManageService" class="com.dingtalk.isv.access.biz.service.DeptManageServiceImpl"/>
+    <bean id="sendMessageService" class="com.dingtalk.isv.access.biz.service.SendMessageServiceImpl"/>
+    <bean id="channelManageService" class="com.dingtalk.isv.access.biz.service.ChannelManageServiceImpl"/>
+    <bean id="isvBizLockServiceImpl" class="com.dingtalk.isv.access.biz.service.ISVBizLockServiceImpl"/>
+
+    <!-- LOG -->
+    <bean id="serviceMethodInterceptor" class="com.dingtalk.isv.access.common.log.service.ServiceMethodInterceptor"></bean>
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>suiteManageService</value>
+                <value>corpSuiteAuthService</value>
+                <value>corpManageService</value>
+                <value>staffManageService</value>
+                <value>deptManageService</value>
+                <value>sendMessageService</value>
+                <value>channelManageService</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>serviceMethodInterceptor</value>
+            </list>
+        </property>
+    </bean>
+</beans>
+

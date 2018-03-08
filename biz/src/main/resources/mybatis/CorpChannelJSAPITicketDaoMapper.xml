@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.isv.access.biz.dao.CorpChannelJSAPITicketDao">
+
+    <resultMap type="com.dingtalk.isv.access.biz.model.CorpChannelJSAPITicketDO" id="corpChannelJSTicketMap">
+        <id property="id" column="id" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified" />
+        <result property="suiteKey" column="suite_key" />
+        <result property="corpId" column="corp_id" />
+        <result property="corpChannelJSAPITicket" column="corp_channel_jsapi_ticket" />
+        <result property="expiredTime" column="expired_time" />
+    </resultMap>
+
+    <sql id="select-all-fields">
+        id,
+        gmt_create,
+        gmt_modified,
+        suite_key,
+        corp_id,
+        corp_channel_jsapi_ticket,
+        expired_time
+    </sql>
+
+    <insert id="saveOrUpdateCorpChannelJSAPITicket" useGeneratedKeys="true" keyProperty="id">
+        insert into isv_corp_suite_jsapi_channel_ticket (
+                gmt_create,
+                gmt_modified,
+                suite_key,
+                corp_id,
+        corp_channel_jsapi_ticket,
+                expired_time
+        )values(
+                now(),
+                now(),
+                #{suiteKey},
+                #{corpId},
+                #{corpChannelJSAPITicket},
+                #{expiredTime}
+        )ON DUPLICATE KEY UPDATE gmt_modified=now(),corp_channel_jsapi_ticket=#{corpChannelJSAPITicket},expired_time=#{expiredTime}
+    </insert>
+
+    <select id="getCorpChannelJSAPITicket" resultMap="corpChannelJSTicketMap">
+        SELECT <include refid="select-all-fields"/>  FROM isv_corp_suite_jsapi_channel_ticket
+        <![CDATA[
+			WHERE suite_key=#{suiteKey} and corp_id=#{corpId}
+		 ]]>
+    </select>
+
+
+    <delete id="deleteCorpChannelJSAPITicket">
+        DELETE FROM isv_corp_suite_jsapi_channel_ticket
+        <![CDATA[
+			WHERE suite_key=#{suiteKey} and corp_id=#{corpId}
+		 ]]>
+    </delete>
+</mapper>

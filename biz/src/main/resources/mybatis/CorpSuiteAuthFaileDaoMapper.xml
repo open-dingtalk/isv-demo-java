@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.isv.access.biz.dao.CorpSuiteAuthFaileDao">
+
+    <resultMap type="com.dingtalk.isv.access.biz.model.CorpSuiteAuthFaileDO" id="corpSuiteAuthFaileMap">
+        <id property="id" column="id" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified" />
+        <result property="suiteKey" column="suite_key" />
+        <result property="corpId" column="corp_id" />
+        <result property="faileInfo" column="faile_info" />
+        <result property="authFaileType" column="auth_faile_type" />
+        <result property="suitePushType" column="suite_push_type" />
+    </resultMap>
+
+    <sql id="select-all-fields">
+        id,
+        gmt_create,
+        gmt_modified,
+        suite_key,
+        corp_id,
+        faile_info,
+        auth_faile_type,
+        suite_push_type
+    </sql>
+
+    <insert id="addOrUpdateCorpSuiteAuthFaileDO" useGeneratedKeys="true" keyProperty="id">
+        insert into isv_corp_suite_auth_faile (
+                gmt_create,
+                gmt_modified,
+                suite_key,
+                corp_id,
+                faile_info,
+                auth_faile_type,
+                suite_push_type
+        )values(
+                now(),
+                now(),
+                #{suiteKey},
+                #{corpId},
+                #{faileInfo},
+                #{authFaileType},
+                #{suitePushType}
+        )ON DUPLICATE KEY UPDATE gmt_modified=now(),faile_info=#{faileInfo}
+    </insert>
+
+    <select id="getCorpSuiteAuthFaileList" resultMap="corpSuiteAuthFaileMap">
+        select <include refid="select-all-fields"/> from isv_corp_suite_auth_faile
+        limit #{offset},#{limit}
+    </select>
+
+
+    <delete id="deleteById">
+        delete from isv_corp_suite_auth_faile where id=#{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
+       default-autowire="byName">
+
+    <!-- 配置 Mapper -->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.dingtalk.isv.access.biz"/>
+        <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
+    </bean>
+
+    <!-- 配置mybatis数据源支持 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath*:/mybatis/*Mapper.xml"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    </bean>
+
+    <!-- 事务管理 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+</beans>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.dingtalk</groupId>
+        <artifactId>dingtalk.isv.access</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <groupId>com.dingtalk</groupId>
+    <artifactId>dingtalk.isv.access.api</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+        <dependencies>
+            <dependency>
+                <groupId>com.dingtalk</groupId>
+                <artifactId>dingtalk.isv.access.common</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jms</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>javax.jms</groupId>
+                <artifactId>jms-api</artifactId>
+            </dependency>
+            <dependency>
+                <groupId>com.dingtalk.open</groupId>
+                <artifactId>client-sdk.api</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+                <scope>system</scope>
+                <systemPath>${project.basedir}/lib/client-sdk.api-1.0.0-SNAPSHOT.jar</systemPath>
+            </dependency>
+        </dependencies>
+        <distributionManagement>
+            <repository>
+                <id>releases</id>
+                <name>Nexus Release Repository</name>
+                <url>http://danteng.com:8081/repository/maven-releases/</url>
+            </repository>
+            <snapshotRepository>
+                <id>snapshots</id>
+                <name>Nexus Snapshot Repository</name>
+                <url>http://danteng.com:8081/repository/maven-snapshots/</url>
+            </snapshotRepository>
+        </distributionManagement>
+</project>

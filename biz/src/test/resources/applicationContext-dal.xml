@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+       default-autowire="byName">
+
+    <bean id="propertyPlaceholderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <value>classpath:default.properties</value>
+        </property>
+    </bean>
+
+
+    <import resource="classpath:spring-service.xml"/>
+
+    <import resource="classpath:spring-jdbc.xml"/>
+
+    <import resource="classpath:spring-dao.xml"/>
+
+    <import resource="classpath:spring-sdk.xml"/>
+
+    <import resource="classpath:spring-queue.xml"/>
+
+    <!--
+
+        <import resource="classpath:spring-task.xml"/>
+
+        <import resource="classpath:spring-sdk.xml"/>
+
+        <import resource="classpath:spring-queue.xml"/>
+        -->
+</beans>

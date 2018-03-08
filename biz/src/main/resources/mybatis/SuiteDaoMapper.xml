@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dingtalk.isv.access.biz.dao.SuiteDao">
+
+    <resultMap type="com.dingtalk.isv.access.biz.model.SuiteDO" id="suiteMap">
+        <id property="id" column="id" />
+        <result property="gmtCreate" column="gmt_create" />
+        <result property="gmtModified" column="gmt_modified" />
+        <result property="suiteName" column="suite_name" />
+        <result property="suiteKey" column="suite_key" />
+        <result property="suiteSecret" column="suite_secret" />
+        <result property="encodingAesKey" column="encoding_aes_key" />
+        <result property="token" column="token" />
+        <result property="eventReceiveUrl" column="event_receive_url" />
+    </resultMap>
+
+    <sql id="select-all-fields">
+        id,
+        gmt_create,
+        gmt_modified,
+        suite_name,
+        suite_key,
+        suite_secret,
+        encoding_aes_key,
+        token,
+        event_receive_url
+    </sql>
+
+    <insert id="addSuite" useGeneratedKeys="true" keyProperty="id">
+        insert into isv_suite (
+                gmt_create,
+                gmt_modified,
+                suite_name,
+                suite_key,
+                suite_secret,
+                encoding_aes_key,
+                token,
+                event_receive_url
+        )values(
+                now(),
+                now(),
+                #{suiteName},
+                #{suiteKey},
+                #{suiteSecret},
+                #{encodingAesKey},
+                #{token},
+                #{eventReceiveUrl}
+        )
+    </insert>
+
+
+    <select id="getAllSuite" resultMap="suiteMap">
+        SELECT <include refid="select-all-fields"/>   FROM isv_suite
+    </select>
+
+
+    <select id="getSuiteByKey" resultMap="suiteMap">
+        SELECT <include refid="select-all-fields"/>  FROM isv_suite
+        <![CDATA[
+			WHERE suite_key=#{suiteKey}
+		 ]]>
+    </select>
+
+
+
+</mapper>
