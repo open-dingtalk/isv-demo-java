@@ -1,41 +1,62 @@
-#准备工作
+### 前言
+我们在开发钉钉ISV应用的时候，会发现钉钉ISV套件必须部署有公网IP的服务器上，也就是在开发套件之前必须先准备购买阿里云等机器资源。在之后的开发中，由于ISV套件的回调地址必须是公网域名或IP之下，对于大部分开发者来说，开发者无法在本地调试远程代码，对于回调URL校验不通过之类问题无法追踪，只能不断远程部署来看log日志来调试修改，本文主要讲解如何解决这些问题。
 
-1.具有公网IP的服务器，假设IP地址为a.b.c.d（如果未来您开发的应用要上架钉钉应用市场，需要将应用部署到钉钉云上，参考：[上钉钉云指南](https://open-doc.dingtalk.com/docs/doc.htm?spm=a219a.7629140.0.0.vVu3R9&treeId=175&articleId=107625&docType=1)）。
+### 解决方案
+基于以上问题，我们设计了一套支持ISV套件本地化调试的方案，使用这套方案可以达到以下目的：
+1. ISV套件开发阶段不需要购买阿里云等公网机器资源
+2. 开发调试套件可以在本地（eclipse+Tomcat）进行，不需要部署到远程公网机器上
 
-2.搭建JAVA环境，注意：<font color=red>需要安装[JCE补丁](https://stackoverflow.com/questions/6481627/java-security-illegal-key-size-or-default-parameters#answers)，否则会出异常java.security.InvalidKeyException:illegal Key Size和『计算解密文字错误』</font>。
+### 启动内网穿透
+1.下载工具
 
-&nbsp;&nbsp;&nbsp;在官方网站下载并安装JCE无限制权限策略文件步骤：
-&nbsp;&nbsp;&nbsp;JDK6的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html](http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html)
-
-&nbsp;&nbsp;&nbsp;JDK7的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html)
-
-&nbsp;&nbsp;&nbsp;JDK8的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
-
-&nbsp;&nbsp;&nbsp;下载后解压，可以看到local_policy.jar和US_export_policy.jar以及readme.txt。如果安装的是JRE，将两个jar文件放到%JRE_HOME%\lib\security目录下覆盖原来的文件，如果安装的是JDK，将两个jar文件放到%JDK_HOME%\jre\lib\security目录下覆盖原来文件。
-
-&nbsp;&nbsp;&nbsp;库地址：[https://github.com/hetaoZhong/ding-isv-access/blob/master/web/lib/lippi-oapi-encrpt.jar](https://github.com/hetaoZhong/ding-isv-access/blob/master/web/lib/lippi-oapi-encrpt.jar)
-
-&nbsp;&nbsp;&nbsp;ISV回调代码示例：[https://github.com/hetaoZhong/ding-isv-access/blob/master/web/src/main/java/com/dingtalk/isv/access/web/controller/suite/callback/SuiteCallBackController.java](https://github.com/hetaoZhong/ding-isv-access/blob/master/web/src/main/java/com/dingtalk/isv/access/web/controller/suite/callback/SuiteCallBackController.java)
-
-3.部署TOMCAT服务器，假设端口为8080。
-
-4.安装MySQL数据库，需要提前新建名称为ding_ isv_access数据库（如果数据库名称要修改，需要自己修改后面数据库导入脚本的数据库名字）。
-
-5.安装Maven，项目构建管理工具。
-
-#部署代码
-
-##下载代码
-
-```
-git clone https://github.com/hetaoZhong/ding-isv-access.git
+```plain
+git clone https://github.com/open-dingtalk/pierced.git
 ```
 
-请开发者使用jdk1.6或以上版本。 
+![image.png | center | 752x194](https://cdn.yuque.com/lark/2018/png/bd935f2f-c3f8-44de-a658-a104bfdafc24.png "")
+启动工具，执行命令“./ding -config=./ding.cfg -subdomain=域名前缀 端口”，以mac为例：
+```plain
+cd mac_64
+chmod 777 ./ding
+./ding -config=./ding.cfg -subdomain=abcde 8080
+```
 
-##导入数据库文件
+启动后界面如下图所示：
+![image.png | center | 752x201](https://cdn.yuque.com/lark/2018/png/ddfd9389-58b6-43b4-adf9-f8db52f25bba.png "")
+参数说明：
+| 参数 | 说明 |
+| --- | --- |
+| config | 钉钉提供内网穿透的配置文件，不可修改 |
+| subdomain | 你需要使用的域名前缀，该前缀将会匹配到“vaiwan.com”前面，例如你的subdomain是abcde，你启动工具后将会将abcde.vaiwan.com映射到本地 |
+| 端口 | 你需要代理的本地服务http-server端口，例如你本地端口为8080等 |
 
-提示：需要提前新建ding_isv_access数据库，详见“准备工作”第4步。
+2.启动完这个客户端后，你访问http://abcde.vaiwan.com/xxxxx都会映射到 http://127.0.0.1:8080/xxxxx
+注意：
+> 1.你需要访问的域名是http://abcde.vaiwan.com/xxxxx 而不是http://abcde.vaiwan.com:8082/xxxxx
+> 2.你启动命令的subdomain参数有可能被别人占用，尽量不要用常用字符，可以用自己公司名的拼音，例如我使用：alibaba、dingding等。
+> 3.可以在本地起个http-server服务，放置一个index.html文件，然后访问http://abcde.vaiwan.com/index.html测试一下。
+
+### 准备开发环境
+搭建JAVA环境，注意：需要安装[JCE补丁](https://stackoverflow.com/questions/6481627/java-security-illegal-key-size-or-default-parameters#answers)，否则会出异常java.security.InvalidKeyException:illegal Key Size和『计算解密文字错误』。
+
+> 在官方网站下载并安装JCE无限制权限策略文件步骤：
+> JDK6的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html](http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html)
+> JDK7的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html)
+> JDK8的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
+
+   下载后解压，可以看到local\_policy.jar和US\_export\_policy.jar以及readme.txt。如果安装的是JRE，将两个jar文件放到%JRE\_HOME%\lib\security目录下覆盖原来的文件，如果安装的是JDK，将两个jar文件放到%JDK\_HOME%\jre\lib\security目录下覆盖原来文件。
+
+下载eclipse或者intelliJ，Tomcat等搭建本地java项目环境，不一一赘述。
+### DEMO部署
+下载示例代码
+```
+git clone https://github.com/open-dingtalk/isv-demo-java.git
+```
+请开发者使用jdk1.6或以上版本。
+
+__导入数据库文件__
+
+提示：需要提前新建ding\_isv\_access数据库，详见“准备工作”第4步。
 
 ```
 mysql -u root -p ding_isv_access < db_sql.sql
@@ -43,131 +64,93 @@ mysql -u root -p ding_isv_access < db_sql.sql
 
 此步骤可能会遇到如下报错：
 
-> COLLATION 'utf8_general_ci' is not valid for CHARACTER SET 'utf8mb4'
+> COLLATION 'utf8\_general\_ci' is not valid for CHARACTER SET 'utf8mb4'
 
-请将db_sql.sql以文本形式打开，并将文件中所有“utf8md4”字符串全部替换为“uft8”。
+请将db\_sql.sql以文本形式打开，并将文件中所有“utf8mb4”字符串全部替换为“uft8”。
 
-##获取验证回调地址参数
+### 创建测试套件并配置代码
+登录钉钉开发者平台，创建一个测试套件，如下图所示：
 
-进入[钉钉开发者平台](http://open-dev.dingtalk.com)，[创建ISV套件](https://open-doc.dingtalk.com/docs/doc.htm?treeId=366&articleId=104943&docType=1)并获取以下参数：
+![image.png | center | 752x348](https://gw.alipayobjects.com/zos/skylark/46b7f7e8-3aae-48dc-9552-195c4cb4b74f/2018/png/01e80151-3d5a-4f22-a92f-a1d51b755503.png "")
 
-1.  Token: 随意填写任意字符串。
-2.  数据加密密钥: 点击自动生成。
+选择条件类型为“测试套件”，注意：套件类型一旦选定不能进行修改，测试套件主要是用来做开发调试，不能发布商品、不能生成线下部署二维码。
+![image.png | center | 752x625](https://gw.alipayobjects.com/zos/skylark/4d0c1fb9-e905-4033-aaa0-18dbed2b0d64/2018/png/9ae8512f-5577-4eca-b598-46c10f1219a4.png "")
+在创建套件第二步需要我们验证回调地址的有效性，重点来了。
 
-##修改auto-config.xml配置
-
-修改./web/src/main/webapp/META-INF/autoconfig/auto-config.xml文件中的项目log目录地址、ISV应用程序的回调地址。
-
-##清理auto-config
-
-```
-rm -rf ~/antx.properties
-```
-
-##编译
-
-```
-mvn clean package -Dmaven.test.skip=true
-```
-
-编译时会进行配置工作，请按提示修改不符合的项目：
-
-![maven配置](https://img.alicdn.com/tfs/TB1VMgFhf2H8KJjy0FcXXaDlFXa-899-624.png)
-
-注意： demo工程暂不支持JDK9环境。 如果当前您的JDK版本为JDK9，maven可能会打包出错。建议将系统Java版本修改为JDK9以下。 
-
-##部署
-
-在对demo工程进行部署前，需要进行以下几个步骤：
-（1）修改deploy-ding-isv-access.sh中tomac地址和工程地址为对应的自己的地址；
-（2）修改deploy-ding-isv-access.sh权限为可执行权限：
-
-```
-chmod 755 ./deploy-ding-isv-access.sh
-```
-
-（3）执行脚本：
-
-```
-./deploy-ding-isv-access.sh
-```
-
-如果配置无误，打开浏览器输入地址：http://a.b.c.d:8080/ding-isv-access/checkpreload.htm（其中a.b.c.d为您将工程部署在的公网服务器地址），会看到浏览器中显示success，说明项目已经部署成功。
-
-#创建套件
-
-##第一步
-
-进入[钉钉开发者后台](http://open-dev.dingtalk.com)并创建ISV套件，如下填写参数的值：
-
-1.Token：任意字符串（获取验证回调地址参数步骤填写的）
-
-2.数据加密密钥：点击自动生成 （获取验证回调地址参数步骤自动生成的）
- 
-3.IP白名单：a.b.c.d
-
-![shoepic](https://img.alicdn.com/tfs/TB18m8eeMvD8KJjy0FlXXagBFXa-1358-1328.png)
-
-##第二步
-
-1.填写回调URL：http://a.b.c.d:8080/ding-isv-access/suite/callback/${suiteKey} 
-  <font color=red>&nbsp;&nbsp; ${suiteKey}需要替换为页面显示真实的SuiteKey</font>
-  
-2.进入套件管理页面，记下套件名称、Token、数据加密密钥、套件Key、套件secret，如下图所示：
-
-![xxtu](https://img.alicdn.com/tfs/TB1NU8aXamgSKJjSsplXXaICpXa-2626-772.png)
-
-3.在MySQL数据库中插入下面信息，注意替换相应字段值：
-
-```
+![image.png | center | 752x508](https://gw.alipayobjects.com/zos/skylark/4c8916c5-8638-485a-8090-c4ad996b140e/2018/png/64733494-f067-4d7e-b731-aefebd07b369.png "")
+> 通过上面的创建我们能拿到如下参数：
+> Token: 随意填写任意字符串
+> suiteKey：套件key
+> suiteSecret：套件秘钥
+> AESKey：数据加密密钥，点击自动生成
+在MySQL数据库中插入下面信息，注意替换“套件名称、suiteKey、suiteSecret、EncodingAESKey、Token”中的值：
+```plain
 insert into isv_suite(id, gmt_create, gmt_modified, suite_name, suite_key,
 suite_secret, encoding_aes_key, token, event_receive_url)
 values(1, NOW(), NOW(), '套件名称', 'suiteKey', 'suiteSecret','EncodingAESKey', 'Token', '');
 ```
 
-4.修改biz/src/main/resources/spring-jdbc.xml文件中数据库的url、用户名username和密码password项为自己的相关数据。
+我们用IDE打开示例DEMO代码，配置好如上参数。
+1.ding-isv-access/web/src/main/webapp/WEB-INF/config.properties 里面配置好system.env、oapi.environment、corp.suite.callback、jdbc.url、db.username、db.password、suite.suiteKey，如下所示：
 
-5.点击“验证有效性”按钮。如下图所示，若验证结果为检查成功，则套件就已经创建成功了。
+```plain
+oapi.environment=https://oapi.dingtalk.com
+corp.suite.callback=http://xxxxx.vaiwan.com/ding-isv-access/suite/corp_callback/
+#jdbc.url=jdbc:mysql://127.0.0.1:3306/ding_isv_access?useUnicode=true&amp;characterEncoding=utf8
+jdbc.url=
+db.username=
+db.password=
+suite.suiteKey=
+suite.microappAppId=
+```
+| 配置项 | 配置说明 |
+| --- | --- |
+| oapi.environment | 钉钉服务端接口地址 |
+| corp.suite.callback | 套件通讯录回调地址，启动内网穿透后，将xxxxx.vaiwan.com修改为自己的subdomain地址。 |
+| jdbc.url | 数据库连接池地址 |
+| db.username | 数据库用户名 |
+| db.password | 数据库密码 |
+| suite.suiteKey | 创建套件拿到的suitekey |
+| suite.microappAppId | 创建的微应用id，在创建好微应用后填写 |
 
-![shoepic2](https://img.alicdn.com/tfs/TB1CNdaeS_I8KJjy0FoXXaFnVXa-1212-1402.png)
+2.用IDE打开ding-isv-access/web/src/main/webapp/WEB-INF/log4j.xml文件，配置好LOG\_PATH，也就是日志文件地址。
+```plain
+<property name="LOG_PATH" value="/usr/local/logs/ding-isv-access" />
+```
+3.完成上面的配置后，请将代码部署到本地Tomcat下面，如果配置无误，打开浏览器输入地址：http://abcde.vaiwan.com/ding-isv-access/checkpreload.htm，会看到浏览器中显示success，说明项目已经部署成功。
+> 注意：我们提供的内网穿透服务可能会有延迟，如果页面刷新不出来，请稍等3~5分钟后再试。
 
-现在ISV套件已经成功创建，如果遇到问题，可在对应的log文件中检查相关信息:
- 
-1.{TOMCAT_DIR}/logs/localhost.log 工程加载日志
+### 验证回调
+登录开发者后台，点击“创建套件”，点击“下一步”，在回调URL地址上填写通过远程代理的域名服务器地址，例如我的地址是：http://abcde.vaiwan.com/ding-isv-access/suite/callback/{suitekey}。
 
-2.{LOG_DIR}/ding-isv-access.log tomcat的ding-isv-access工程启动情况
+> 注意：{suitekey}替换为自己套件的真实suitekey
 
-3.{LOG_DIR}/biz/http_request_helper.log 所有通过httpclient开放平台请求的http记录。
+点击“验证有效性”验证成功，如下图所示：
 
-4.{LOG_DIR}/biz/http_invoke.log 所有通过sdk开放平台请求的http记录
+![image.png | center | 752x658](https://gw.alipayobjects.com/zos/skylark/1cdcbd07-4c32-4069-9677-570588128698/2018/png/fbac1eb2-af90-4cd9-860c-663d2ef95628.png "")
 
-5.{LOG_DIR}/biz/task.log 所有quartz任务日志。包括定时生成suitetoken
+### 开发微应用
+点击“验证完成”，开始开发应用”进入到套件详情页面，点击右侧的“创建微应用”：
 
-6.{LOG_DIR}/biz/suite_callback.log 所有开放平台调用套件回调信息的日志
+![image.png | center | 752x347](https://gw.alipayobjects.com/zos/skylark/32065ce5-82c9-4510-a7e0-00e0c07ccadd/2018/png/5c11435d-682a-4f63-a869-e58f28e33c6d.png "")
+填写、名称、logo图标、应用描述、主页地址：请填写主页地址填为：
+> 
+> http://abcde.vaiwan.com/ding-isv-access/microapp.html?corpId=$CORPID$
+> 注意为http://abcde.vaiwan.com自己申请的远程域名服务
 
-7.{LOG_DIR}/biz/monitor.log suitetoken是否正常接收,正常更新
+![image.png | center | 752x449](https://cdn.yuque.com/lark/2018/png/b004e606-ba99-4ad1-bb79-90f722809bcc.png "")
 
-
-#激活套件
-
-为了能够在企业工作台打开并使用微应用，还需要完成套件的激活，激活步骤如下:
-
-1.在开发者后台的套件管理-消息推送管理里面，点击“立即推送”，显示Ticket推送状态为推送成功后（如下图所示），在套件管理页面点击创建微应用，主页地址填为`http://a.b.c.d:8080/ding-isv-access/microapp.html?corpId=$CORPID$`。
-
-![](https://img.alicdn.com/tfs/TB1pACmdlUSMeJjSszcXXbnwVXa-2538-808.png)
-
-2.在套件管理页面点击创建测试企业，建立一个企业用于授权激活套件，如下图所示：
-
-![](https://img.alicdn.com/tfs/TB1t4undlUSMeJjSszcXXbnwVXa-2600-1136.png)
-
-3.返回套件管理页面，在授权管理中选择刚创建的企业对应用进行授权，如下图所示：
-
-![](https://img.alicdn.com/tfs/TB1YPirdgMPMeJjy1XdXXasrXXa-1270-553.png)
-
-4.如果配置无误，页面会提示几秒后后刷新页面，可看到企业授权成功。由于后端代码流控设置，需要等待一段时间（大概30分左右）才能看到授权成功的企业列表。
-
-5.返回测试企业列表，点击已授权成功的测试企业的“登录管理”按钮，会提示您如何登录测试企业（您在钉钉客户端会找不到该测试企业）。注意：初次用测试企业账号登录OA后台，一定要从原管理账号登录入口进入，如下图所示。
-
-![](https://img.alicdn.com/tfs/TB1cjpeXaagSKJjy0FhXXcrbFXa-2340-1346.png)
-
-6.返回打开钉钉客户端，在最中间的“工作”tab顶栏切换选择创建的测试企业，可以看到刚创建的微应用已经在列表中可以访问。
+点击确定，保存微应用信息。
+### 配置微应用
+用IDE打开ding-isv-access/web/src/main/webapp/WEB-INF/config.properties，配置好正确的suitekey和microappAppId。
+```plain
+suite.suiteKey=suitexxxxxxx
+suite.microappAppId=APPID
+```
+### 授权微应用
+1.在页面下方点击“重新推送”，向自己的服务器端推送一个suite\_ticket。
+2.选择一个企业并授权一个微应用。
+![image.png | center | 752x277](https://gw.alipayobjects.com/zos/skylark/3a256ec4-d25b-4cea-ba18-2d0c3d5a5adb/2018/png/a9a68cec-a258-4dae-a567-3ca2f1d09df9.png "")
+### 预览微应用
+打开自己的手机版钉钉，切换到刚才授权的测试企业下面，打开自己刚才创建的微应用，即可看到免登成功并拿到userid。
+![IMG_0743.jpeg | center | 720x1280](https://gw.alipayobjects.com/zos/skylark/e33b7b48-bd5d-4e2e-a1d0-e23ea58e3ae1/2018/jpeg/4162d201-ad8c-4cc9-b973-7371ca0a0415.jpeg "")
