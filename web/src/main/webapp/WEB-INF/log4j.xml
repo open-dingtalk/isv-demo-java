@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="GBK" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-
+	
     <appender name="PROJECT" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/dingtalk-isv-access.log"/>
+        <param name="file" value="logs/dingtalk-isv-access.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -12,7 +12,7 @@
     </appender>
 
     <appender name="ERROR" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/dingtalk-isv-access.log"/>
+        <param name="file" value="logs/dingtalk-isv-access.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
         <param name="threshold" value="ERROR"/>
@@ -23,32 +23,42 @@
 
     <!-- callback -->
     <appender name="SUITE_CALLBACK_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/suite_callback.log"/>
+        <param name="file" value="logs/biz/suite_callback.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
-        <param name="threshold" value="${log_level}"/>
+        <param name="threshold" value="info"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
         </layout>
     </appender>
 
+	<!-- jsapi -->
+    <appender name="JSAPI_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="logs/biz/jsapi_callback.log"/>
+        <param name="append" value="true"/>
+        <param name="encoding" value="UTF-8"/>
+        <param name="threshold" value="info"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
+        </layout>
+    </appender>
+    
     <!-- suite -->
     <appender name="SUITE_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/suite_manage.log"/>
+        <param name="file" value="logs/biz/suite_manage.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
-        <param name="threshold" value="${log_level}"/>
+        <param name="threshold" value="info"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
         </layout>
     </appender>
 
-    <!-- 企业套件授权管理 -->
     <appender name="CORP_SUITE_AUTH_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/corp_suite_auth.log"/>
+        <param name="file" value="logs/biz/corp_suite_auth.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
-        <param name="threshold" value="${log_level}"/>
+        <param name="threshold" value="info"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
         </layout>
@@ -57,10 +67,10 @@
 
     <!-- corp-->
     <appender name="CORP_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/corp_manage.log"/>
+        <param name="file" value="logs/biz/corp_manage.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
-        <param name="threshold" value="${log_level}"/>
+        <param name="threshold" value="info"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
         </layout>
@@ -68,10 +78,10 @@
 
    <!-- org-->
     <appender name="ORG_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/org_manage.log"/>
+        <param name="file" value="logs/biz/org_manage.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
-        <param name="threshold" value="${log_level}"/>
+        <param name="threshold" value="info"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
         </layout>
@@ -79,10 +89,10 @@
 
     <!-- staff-->
     <appender name="STAFF_MANAGE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/staff_manage.log"/>
+        <param name="file" value="logs/biz/staff_manage.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
-        <param name="threshold" value="${log_level}"/>
+        <param name="threshold" value="info"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %C{1}.%M:%L - %m%n"/>
         </layout>
@@ -90,7 +100,7 @@
 
     <!-- remote serivce -->
     <appender name="SERVICE_PROFILE_LOG_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/service_profile_access.log"/>
+        <param name="file" value="logs/biz/service_profile_access.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
         <param name="threshold" value="INFO"/>
@@ -101,7 +111,7 @@
 
     <!-- http controller -->
     <appender name="CONTROLLER_PROFILE_LOG_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/controller_profile_access.log"/>
+        <param name="file" value="logs/biz/controller_profile_access.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
         <param name="threshold" value="INFO"/>
@@ -112,7 +122,7 @@
 
     <!-- http invoke log -->
     <appender name="HTTP_INVOKE_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/http_invoke.log"/>
+        <param name="file" value="logs/biz/http_invoke.log"/>
         <param name="append" value="true"/>
         <param name="encoding" value="UTF-8"/>
         <param name="threshold" value="INFO"/>
@@ -123,7 +133,7 @@
 
     <!-- ding open sdk log -->
     <appender name="DING_OPEN_CLIENT_SDK_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/client_sdk.log" />
+        <param name="file" value="logs/biz/client_sdk.log" />
         <param name="append" value="true" />
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="INFO" />
@@ -134,7 +144,7 @@
 
     <!-- task log -->
     <appender name="TASK_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/task.log" />
+        <param name="file" value="logs/biz/task.log" />
         <param name="append" value="true" />
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="INFO" />
@@ -145,7 +155,7 @@
 
     <!-- monitor log -->
     <appender name="OAPI_HTTP_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/http_request_helper.log" />
+        <param name="file" value="logs/biz/http_request_helper.log" />
         <param name="append" value="true" />
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="INFO" />
@@ -156,7 +166,7 @@
 
     <!-- monitor log -->
     <appender name="EVENT_LOGGER_APPENDER" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${log_dir}/biz/event.log" />
+        <param name="file" value="logs/biz/event.log" />
         <param name="append" value="true" />
         <param name="encoding" value="UTF-8" />
         <param name="threshold" value="INFO" />
@@ -181,29 +191,29 @@
     </logger>
 
     <logger name="CORP_SUITE_AUTH_LOGGER" additivity="false">
-        <level value="${log_level}"/>
+        <level value="info"/>
         <appender-ref ref="CORP_SUITE_AUTH_LOGGER_APPENDER"/>
     </logger>
 
     <logger name="CORP_MANAGE_LOGGER" additivity="false">
-        <level value="${log_level}"/>
+        <level value="info"/>
         <appender-ref ref="CORP_MANAGE_LOGGER_APPENDER"/>
     </logger>
 
     <logger name="ORG_MANAGE_LOGGER" additivity="false">
-        <level value="${log_level}"/>
+        <level value="info"/>
         <appender-ref ref="ORG_MANAGE_LOGGER_APPENDER"/>
     </logger>
 
 
     <logger name="SUITE_MANAGE_LOGGER" additivity="false">
-        <level value="${log_level}"/>
+        <level value="info"/>
         <appender-ref ref="SUITE_MANAGE_LOGGER_APPENDER"/>
     </logger>
 
 
     <logger name="STAFF_MANAGE_LOGGER" additivity="false">
-        <level value="${log_level}"/>
+        <level value="info"/>
         <appender-ref ref="STAFF_MANAGE_LOGGER_APPENDER"/>
     </logger>
 
@@ -218,10 +228,15 @@
     </logger>
 
     <logger name="SUITE_CALLBACK_LOGGER" additivity="false">
-        <level value="${log_level}"/>
+        <level value="info"/>
         <appender-ref ref="SUITE_CALLBACK_LOGGER_APPENDER"/>
     </logger>
 
+	<logger name="JSAPI_LOGGER" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="JSAPI_LOGGER_APPENDER"/>
+    </logger>
+    
     <logger name="HTTP_INVOKE_LOGGER" additivity="false">
         <level value="INFO"/>
         <appender-ref ref="HTTP_INVOKE_LOGGER_APPENDER"/>
@@ -244,7 +259,7 @@
 
 
     <root>
-        <level value="${log_level}"/>
+        <level value="info"/>
         <appender-ref ref="PROJECT"/>
         <appender-ref ref="ERROR"/>
     </root>

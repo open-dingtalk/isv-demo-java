@@ -34,7 +34,6 @@
         var nonce = "";
         var timeStamp = "";
         var agentId = "";
-
         $.post(
           "get_js_config",
           {
@@ -50,7 +49,7 @@
             timeStamp = result.timeStamp;
             agentId = result.agentId;
             corpId = result.corpId;
-
+            console.log("signature:"+signature+ "====nonce:"+nonce+"====timeStamp:"+timeStamp+"===agentId:"+agentId+"====corpId:"+corpId);
             dd.config({
               "agentId": agentId,
               "corpId": corpId,

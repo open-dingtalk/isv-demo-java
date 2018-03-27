@@ -1,7 +1,0 @@
-#log
-log.dir=${log_dir}
-log.level=${log_level}
-#other
-system.env=${system_env}
-oapi.environment=${oapi_environment}
-corp.suite.callback=${corp_suite_callback}

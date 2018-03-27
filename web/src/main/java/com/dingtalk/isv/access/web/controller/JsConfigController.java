@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.dingtalk.isv.access.web.common.SystemConfig;
 
 import javax.annotation.Resource;
 import java.net.URL;
@@ -32,12 +33,11 @@ public class JsConfigController {
     private static final Logger bizLogger = LoggerFactory.getLogger("JSAPI_LOGGER");
     @Resource
     private CorpManageService corpManageService;
+    
+    @Resource
+    private SystemConfig systemConfig;
     @Resource
     private EmpManageService empManageService;
-    //你的套件suiteKey。这里写死,ISV自己做配置
-    private final String suiteKey= "suitexdhgv7mn5ufoi9ui";
-    //你的微应用appid。这里写死,ISV自己做配置
-    private final Long microappAppId = 1949L;
     /**
      * 测试微应用鉴权
      * @param url
@@ -50,6 +50,9 @@ public class JsConfigController {
                               @RequestParam(value = "corpId", required = false) String corpId
 
     ) {
+    	String suiteKey= systemConfig.getSuiteKey();
+        Long microappAppId = Long.valueOf(systemConfig.getMicroappAppId());
+        
         try{
             bizLogger.info(LogFormatter.getKVLogData(LogFormatter.LogEvent.START,
                     "get_js_config",
@@ -58,11 +61,13 @@ public class JsConfigController {
                     LogFormatter.KeyValue.getNew("suiteKey", suiteKey),
                     LogFormatter.KeyValue.getNew("appId", microappAppId)
             ));
+            System.out.println(url + "===" + corpId +"===" + suiteKey + "==" + microappAppId);
             url = check(url,corpId,suiteKey,microappAppId);
             ServiceResult<CorpJSAPITicketVO> jsapiTicketSr = corpManageService.getCorpJSAPITicket(suiteKey, corpId);
             ServiceResult<CorpAppVO> corpAppVOSr = corpManageService.getCorpApp(corpId, microappAppId);
             String nonce = com.dingtalk.oapi.lib.aes.Utils.getRandomStr(8);
             Long timeStamp = System.currentTimeMillis();
+           
             String sign = DingTalkJsApiSingnature.getJsApiSingnature(url, nonce, timeStamp, jsapiTicketSr.getResult().getCorpJSAPITicket());
             Map<String,Object> jsapiConfig = new HashMap<String, Object>();
             jsapiConfig.put("signature",sign);
@@ -94,6 +99,9 @@ public class JsConfigController {
                                             @RequestParam(value = "corpId", required = false) String corpId,
                                             @RequestParam(value = "code", required = false) String code) {
         try{
+        	String suiteKey= systemConfig.getSuiteKey();
+            Long microappAppId = Long.valueOf(systemConfig.getMicroappAppId());
+            
             bizLogger.info(LogFormatter.getKVLogData(LogFormatter.LogEvent.START,
                     "get_user_info",
                     LogFormatter.KeyValue.getNew("code", code),

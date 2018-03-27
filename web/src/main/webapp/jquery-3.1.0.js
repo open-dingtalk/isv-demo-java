@@ -8218,7 +8218,6 @@ function buildParams( prefix, obj, traditional, add ) {
 		// Serialize array item.
 		jQuery.each( obj, function( i, v ) {
 			if ( traditional || rbracket.test( prefix ) ) {
-
 				// Treat each array item as a scalar.
 				add( prefix, v );
 

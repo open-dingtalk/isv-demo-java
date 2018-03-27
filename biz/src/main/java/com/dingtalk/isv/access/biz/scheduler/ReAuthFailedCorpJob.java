@@ -23,20 +23,27 @@ public class ReAuthFailedCorpJob {
     private SuiteManageService suiteManageService;
 
     /**
+     * 套件key
+     */
+    private String suiteKey;
+
+    /**
+     * 应用ID
+     */
+    private String microappAppId;
+
+    /**
      * 对开通套件微应用失败的授权企业重新开通。
      */
     public void reAuthFaileApp() {
         try{
             bizLogger.info(LogFormatter.getKVLogData(LogFormatter.LogEvent.START,
-                    "任务开始。。。"
+                "任务开始。。。"
             ));
-            //要检测套件,ISV要换成自己的SuiteKey。做成配置项
-            String suiteKey = "suitexdhgv7mn5ufoi9ui";
-            //要检测的微应用APPID。ISV要换成自己的APPID。做成配置项
-            Long appId = 1949L;
+
             ServiceResult<SuiteTokenVO> suiteTokenSr = suiteManageService.getSuiteToken(suiteKey);
             String suiteToken = suiteTokenSr.getResult().getSuiteToken();
-            ServiceResult<List<UnActiveCorpVO>> corpListSr = isvRequestHelper.getUnactiveCorp(suiteToken,appId);
+            ServiceResult<List<UnActiveCorpVO>> corpListSr = isvRequestHelper.getUnactiveCorp(suiteToken,Long.valueOf(microappAppId));
             List<String> corpIdList = new ArrayList<String>();
             if(corpListSr.isSuccess() && !CollectionUtils.isEmpty(corpListSr.getResult())){
                 for(UnActiveCorpVO unActiveCorpVO:corpListSr.getResult()){
@@ -44,17 +51,33 @@ public class ReAuthFailedCorpJob {
                 }
             }
             if(!CollectionUtils.isEmpty(corpIdList)){
-                isvRequestHelper.reAuthCorp(suiteToken,appId,corpIdList);
+                isvRequestHelper.reAuthCorp(suiteToken,Long.valueOf(microappAppId),corpIdList);
             }
             bizLogger.info(LogFormatter.getKVLogData(LogFormatter.LogEvent.START,
-                    "任务结束。。。"
+                "任务结束。。。"
             ));
         }catch (Exception e){
             String errLog = LogFormatter.getKVLogData(LogFormatter.LogEvent.END,
-                    "程序异常"+e.toString()
+                "程序异常"+e.toString()
             );
             bizLogger.error(errLog,e);
             mainLogger.error(errLog,e);
         }
+    }
+
+    public String getSuiteKey() {
+        return suiteKey;
+    }
+
+    public void setSuiteKey(String suiteKey) {
+        this.suiteKey = suiteKey;
+    }
+
+    public String getMicroappAppId() {
+        return microappAppId;
+    }
+
+    public void setMicroappAppId(String microappAppId) {
+        this.microappAppId = microappAppId;
     }
 }
