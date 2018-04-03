@@ -37,15 +37,7 @@ chmod 777 ./ding
 > 3.可以在本地起个http-server服务，放置一个index.html文件，然后访问http://abcde.vaiwan.com/index.html测试一下。
 
 ### 准备开发环境
-搭建JAVA环境，注意：需要安装[JCE补丁](https://stackoverflow.com/questions/6481627/java-security-illegal-key-size-or-default-parameters#answers)，否则会出异常java.security.InvalidKeyException:illegal Key Size和『计算解密文字错误』。
-
-> 在官方网站下载并安装JCE无限制权限策略文件步骤：
-> JDK6的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html](http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html)
-> JDK7的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html)
-> JDK8的下载地址：[http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html)
-
-   下载后解压，可以看到local\_policy.jar和US\_export\_policy.jar以及readme.txt。如果安装的是JRE，将两个jar文件放到%JRE\_HOME%\lib\security目录下覆盖原来的文件，如果安装的是JDK，将两个jar文件放到%JDK\_HOME%\jre\lib\security目录下覆盖原来文件。
-
+搭建JAVA环境，建议使用jdk8
 下载eclipse或者intelliJ，Tomcat等搭建本地java项目环境，不一一赘述。
 ### DEMO部署
 下载示例代码
